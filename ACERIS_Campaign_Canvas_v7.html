@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACERIS Q2 2026 — Campaign Canvas v7.0</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0f14;--bg2:#13161e;--bg3:#1a1e2a;
+  --b:rgba(255,255,255,0.07);--bb:rgba(255,255,255,0.13);
+  --teal:#1dd9a0;--td2:rgba(29,217,160,0.1);--tg:rgba(29,217,160,0.15);
+  --amber:#f59e0b;--ad:rgba(245,158,11,0.1);--ag:rgba(245,158,11,0.18);
+  --vio:#8b5cf6;--vd:rgba(139,92,246,0.12);--vg:rgba(139,92,246,0.18);
+  --sky:#38bdf8;--skd:rgba(56,189,248,0.1);--skg:rgba(56,189,248,0.15);
+  --green:#22c55e;--grd:rgba(34,197,94,0.1);--grg:rgba(34,197,94,0.15);
+  --rose:#f43f5e;--rd:rgba(244,63,94,0.12);
+  --orange:#fb923c;
+  --text:#e8eaf0;--tm:rgba(232,234,240,0.5);--td:rgba(232,234,240,0.24);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:28px 18px 80px;line-height:1.5;}
+
+.tabs{display:flex;gap:3px;margin-bottom:20px;background:var(--bg2);padding:4px;border-radius:11px;border:1px solid var(--b);flex-wrap:wrap;}
+.tab{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.05em;padding:5px 10px;border-radius:7px;cursor:pointer;color:var(--td);border:none;background:transparent;transition:all 0.12s;white-space:nowrap;}
+.tab.on{background:var(--bg3);color:var(--text);border:1px solid var(--bb);}
+.tab:hover:not(.on){color:var(--tm);}
+.view{display:none;}.view.on{display:block;}
+
+.ey{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--teal);text-transform:uppercase;margin-bottom:6px;}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:21px;letter-spacing:-0.02em;line-height:1.1;color:#fff;margin-bottom:5px;}
+h2{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:4px;}
+h3{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:#fff;margin-bottom:3px;}
+.sub{color:var(--tm);font-size:11px;font-weight:300;max-width:640px;line-height:1.6;}
+
+/* ── OVERVIEW ── */
+.campaign-banner{background:linear-gradient(135deg,rgba(29,217,160,0.08),transparent);border:1px solid rgba(29,217,160,0.18);border-radius:14px;padding:18px 22px;margin-bottom:16px;position:relative;overflow:hidden;}
+.campaign-banner::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(29,217,160,0.06),transparent 70%);pointer-events:none;}
+.campaign-name{font-family:'Syne',sans-serif;font-weight:800;font-size:26px;letter-spacing:-0.02em;color:#fff;line-height:1;}
+.campaign-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--teal);margin-top:4px;text-transform:uppercase;}
+.campaign-dates{font-size:11px;color:var(--tm);margin-top:6px;}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.stat{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:10px 12px;}
+.stat-num{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;line-height:1;margin-bottom:2px;}
+.stat-lbl{font-size:8.5px;color:var(--tm);}
+.s-teal{color:var(--teal);}
+.s-amber{color:var(--amber);}
+.s-vio{color:var(--vio);}
+.s-sky{color:var(--sky);}
+
+.obj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.obj{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:10px 13px;}
+.obj-label{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--td);margin-bottom:4px;}
+.obj-val{font-size:11px;color:var(--tm);line-height:1.5;}
+.obj-val strong{color:#fff;}
+
+.slc-update{background:linear-gradient(135deg,rgba(245,158,11,0.06),transparent);border:1px solid rgba(245,158,11,0.14);border-radius:10px;padding:12px 14px;margin-bottom:16px;}
+.slc-update-title{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.slc-update-title::before{content:'▲';font-size:7px;}
+.slc-update-body{font-size:10.5px;color:var(--tm);line-height:1.6;}
+.slc-update-body strong{color:#fff;}
+.slc-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
+.chip{font-family:'DM Mono',monospace;font-size:7px;padding:2px 6px;border-radius:4px;white-space:nowrap;}
+.chip-t{background:var(--td2);color:var(--teal);}
+.chip-a{background:var(--ad);color:var(--amber);}
+.chip-v{background:var(--vd);color:var(--vio);}
+.chip-s{background:var(--skd);color:var(--sky);}
+.chip-g{background:var(--grd);color:var(--green);}
+
+.product-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.prod{background:var(--bg2);border:1px solid var(--b);border-radius:10px;padding:10px 12px;}
+.prod-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.08em;text-transform:uppercase;color:var(--td);margin-bottom:4px;}
+.prod-name{font-family:'Syne',sans-serif;font-weight:700;font-size:11px;color:#fff;margin-bottom:3px;}
+.prod-note{font-size:9.5px;color:var(--tm);line-height:1.5;}
+.prod-status{display:inline-block;margin-top:5px;font-family:'DM Mono',monospace;font-size:6.5px;padding:1px 5px;border-radius:3px;}
+.ps-live{background:var(--grd);color:var(--green);}
+.ps-design{background:var(--ad);color:var(--amber);}
+.ps-low{background:rgba(255,255,255,0.05);color:var(--td);}
+
+/* ── PHASE PLAN ── */
+.phase-timeline{display:flex;gap:4px;margin-bottom:16px;padding:12px;background:var(--bg2);border:1px solid var(--b);border-radius:10px;overflow-x:auto;}
+.phase-seg{flex:1;min-width:100px;border-radius:7px;padding:8px 10px;text-align:center;}
+.ph1{background:linear-gradient(135deg,var(--skd),transparent);border:1px solid rgba(56,189,248,0.18);}
+.ph2{background:linear-gradient(135deg,var(--vd),transparent);border:1px solid rgba(139,92,246,0.18);}
+.ph3{background:linear-gradient(135deg,var(--grd),transparent);border:1px solid rgba(34,197,94,0.15);}
+.ph4{background:linear-gradient(135deg,var(--ad),transparent);border:1px solid rgba(245,158,11,0.18);}
+.ps-num{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.08em;margin-bottom:2px;}
+.ph1 .ps-num{color:var(--sky);}
+.ph2 .ps-num{color:var(--vio);}
+.ph3 .ps-num{color:var(--green);}
+.ph4 .ps-num{color:var(--amber);}
+.ps-title{font-family:'Syne',sans-serif;font-weight:700;font-size:9px;color:#fff;margin-bottom:1px;}
+.ps-dates{font-size:8px;color:var(--tm);}
+
+.phase-cards{display:flex;flex-direction:column;gap:10px;}
+.phase-card{background:var(--bg2);border:1px solid var(--b);border-radius:12px;overflow:hidden;}
+.pc-head{padding:12px 14px;border-bottom:1px solid var(--b);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.pc-left{display:flex;align-items:flex-start;gap:10px;}
+.pc-num{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;line-height:1;flex-shrink:0;margin-top:1px;}
+.ph1 .pc-num,.pc-num.c1{color:var(--sky);}
+.ph2 .pc-num,.pc-num.c2{color:var(--vio);}
+.ph3 .pc-num,.pc-num.c3{color:var(--green);}
+.ph4 .pc-num,.pc-num.c4{color:var(--amber);}
+.pc-meta{}
+.pc-phase{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--td);margin-bottom:2px;}
+.pc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#fff;margin-bottom:2px;}
+.pc-hook{font-size:10px;color:var(--tm);font-style:italic;}
+.pc-dates-badge{font-family:'DM Mono',monospace;font-size:8px;padding:3px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.b-sky{background:var(--skd);color:var(--sky);}
+.b-vio{background:var(--vd);color:var(--vio);}
+.b-grn{background:var(--grd);color:var(--green);}
+.b-amb{background:var(--ad);color:var(--amber);}
+
+.pc-body{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pc-section-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.1em;text-transform:uppercase;color:var(--td);margin-bottom:5px;}
+.pc-section-body{font-size:10px;color:var(--tm);line-height:1.6;}
+.pc-section-body strong{color:#fff;}
+.pc-section-body li{padding-left:10px;position:relative;margin-bottom:2px;}
+.pc-section-body li::before{content:'→';position:absolute;left:0;color:var(--td);font-size:9px;}
+.pc-section-body ul{list-style:none;}
+
+.slc-callout{background:linear-gradient(90deg,rgba(245,158,11,0.05),transparent);border-left:2px solid rgba(245,158,11,0.3);padding:7px 10px;border-radius:0 6px 6px 0;margin-top:6px;}
+.slc-callout-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.08em;color:var(--amber);text-transform:uppercase;margin-bottom:3px;}
+.slc-callout-body{font-size:9.5px;color:var(--tm);line-height:1.5;}
+.slc-callout-body strong{color:rgba(245,158,11,0.8);}
+
+/* ── CALENDAR ── */
+.week-cards{display:flex;flex-direction:column;gap:10px;}
+.week-card{background:var(--bg2);border:1px solid var(--b);border-radius:12px;overflow:hidden;}
+.wc-head{padding:8px 12px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.wc-num{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;}
+.wc-phase-tag{font-family:'DM Mono',monospace;font-size:7px;padding:1px 6px;border-radius:3px;}
+.wc-posts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;}
+.post-card{background:var(--bg3);border:1px solid var(--b);border-radius:8px;padding:8px 9px;}
+.post-date{font-family:'DM Mono',monospace;font-size:7px;color:var(--td);margin-bottom:3px;}
+.post-type{display:inline-block;font-family:'DM Mono',monospace;font-size:6.5px;padding:1px 4px;border-radius:3px;margin-bottom:5px;}
+.pt-insight{background:rgba(56,189,248,0.1);color:var(--sky);}
+.pt-brand{background:rgba(139,92,246,0.1);color:var(--vio);}
+.pt-framework{background:rgba(29,217,160,0.1);color:var(--teal);}
+.pt-product{background:rgba(245,158,11,0.1);color:var(--amber);}
+.pt-proof{background:rgba(34,197,94,0.1);color:var(--green);}
+.pt-tease{background:rgba(244,63,94,0.1);color:var(--rose);}
+.pt-action{background:rgba(251,146,60,0.1);color:var(--orange);}
+.post-hook{font-size:9.5px;color:#fff;font-weight:500;line-height:1.4;margin-bottom:4px;}
+.post-angle{font-size:8.5px;color:var(--tm);line-height:1.4;margin-bottom:4px;}
+.post-cta{font-family:'DM Mono',monospace;font-size:7px;color:var(--td);padding-top:4px;border-top:1px solid var(--b);}
+
+/* ── PRE-LAUNCH ── */
+.pre-banner{background:linear-gradient(135deg,var(--rd),transparent);border:1px solid rgba(244,63,94,0.16);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.pre-banner-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--rose);margin-bottom:4px;}
+.pre-banner-title{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:4px;}
+.pre-banner-body{font-size:10.5px;color:var(--tm);line-height:1.6;}
+
+.pre-posts{display:flex;flex-direction:column;gap:12px;}
+.pre-post{background:var(--bg2);border:1px solid var(--b);border-radius:12px;overflow:hidden;}
+.pp-head{padding:10px 14px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.pp-day{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#fff;}
+.pp-date{font-family:'DM Mono',monospace;font-size:8px;color:var(--td);}
+.pp-body{padding:12px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.pp-col-label{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--td);margin-bottom:5px;}
+.pp-hook{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:#fff;line-height:1.3;margin-bottom:8px;padding:8px 10px;background:var(--bg3);border-radius:7px;border-left:3px solid var(--teal);}
+.pp-points{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.pp-points li{font-size:10px;color:var(--tm);padding-left:12px;position:relative;line-height:1.5;}
+.pp-points li::before{content:'→';position:absolute;left:0;color:var(--td);font-size:9px;}
+.pp-points li strong{color:#fff;}
+.pp-tone{font-size:9.5px;color:var(--tm);padding:7px 9px;background:var(--bg3);border-radius:6px;border:1px solid var(--b);font-style:italic;line-height:1.5;margin-top:6px;}
+.no-cta{font-family:'DM Mono',monospace;font-size:7.5px;padding:4px 8px;border-radius:4px;background:rgba(255,255,255,0.04);color:var(--td);display:inline-block;margin-top:6px;}
+
+/* ── MESSAGING BANK ── */
+.msg-section{margin-bottom:16px;}
+.msg-section-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--b);}
+.mbti-block{background:var(--bg2);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:12px 14px;margin-bottom:10px;}
+.mbti-intro{font-size:10.5px;color:var(--tm);line-height:1.6;margin-bottom:8px;}
+.mbti-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.mbti-item{background:var(--bg3);border-radius:7px;padding:8px 10px;border:1px solid var(--b);}
+.mbti-item-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.08em;text-transform:uppercase;color:var(--vio);margin-bottom:3px;}
+.mbti-item-val{font-size:10px;color:#fff;line-height:1.4;}
+
+.answer-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.answer-item{background:var(--bg2);border:1px solid var(--b);border-radius:9px;padding:10px 12px;}
+.answer-item-label{font-family:'DM Mono',monospace;font-size:7px;color:var(--teal);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}
+.answer-item-val{font-size:10px;color:var(--tm);line-height:1.5;font-style:italic;}
+.answer-item-val strong{color:#fff;font-style:normal;}
+
+.tease-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.tease-item{background:var(--bg2);border:1px solid var(--b);border-radius:9px;padding:10px 12px;}
+.tease-item:hover{border-color:var(--bb);}
+.tease-module{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:0.06em;color:var(--amber);margin-bottom:3px;}
+.tease-line{font-size:10.5px;color:#fff;font-weight:500;line-height:1.4;margin-bottom:4px;font-family:'Syne',sans-serif;}
+.tease-context{font-size:9px;color:var(--tm);line-height:1.5;}
+
+.vocab-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.vocab-block{background:var(--bg2);border:1px solid var(--b);border-radius:9px;padding:10px 12px;}
+.vocab-block.never{border-color:rgba(244,63,94,0.15);}
+.vocab-block.always{border-color:rgba(29,217,160,0.15);}
+.vocab-label{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+.vocab-block.never .vocab-label{color:var(--rose);}
+.vocab-block.always .vocab-label{color:var(--teal);}
+.vocab-list{display:flex;flex-wrap:wrap;gap:4px;}
+.vocab-chip{font-size:9.5px;padding:3px 7px;border-radius:4px;line-height:1.3;}
+.vocab-block.never .vocab-chip{background:var(--rd);color:rgba(244,63,94,0.8);}
+.vocab-block.always .vocab-chip{background:var(--td2);color:var(--teal);}
+
+@media(max-width:660px){
+  .stat-row,.obj-grid,.product-row,.pc-body,.wc-posts,.pre-posts .pp-body,.mbti-row,.answer-row,.tease-grid,.vocab-row{grid-template-columns:1fr;}
+  h1{font-size:17px;}.campaign-name{font-size:20px;}
+  .week-card .wc-posts{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div style="margin-bottom:16px;">
+  <div class="ey">ACERIS Technologies · Q2 2026</div>
+  <h1>Campaign Canvas — Revised v7.0</h1>
+  <p class="sub">DECIDE. DON'T GUESS. &nbsp;|&nbsp; April 7 – June 1, 2026 &nbsp;|&nbsp; Updated to reflect SLC Architecture v7.0 (54 modules)</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="sw('overview')">Overview</button>
+  <button class="tab" onclick="sw('phases')">Phase Plan</button>
+  <button class="tab" onclick="sw('calendar')">Content Calendar</button>
+  <button class="tab" onclick="sw('prelaunch')">Pre-Launch Week</button>
+  <button class="tab" onclick="sw('messaging')">Messaging Bank</button>
+</div>
+
+<!-- ══════════════════════════════
+     TAB 1 — OVERVIEW
+══════════════════════════════ -->
+<div class="view on" id="v-overview">
+
+  <div class="campaign-banner">
+    <div class="campaign-sub">Campaign Name</div>
+    <div class="campaign-name">DECIDE. DON'T GUESS.</div>
+    <div class="campaign-dates">8 weeks &nbsp;·&nbsp; April 7 – June 1, 2026 &nbsp;·&nbsp; LinkedIn Organic + Paid</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num s-teal">10</div>
+      <div class="stat-lbl">Free diagnostics completed by June 1</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num s-amber">3</div>
+      <div class="stat-lbl">SLC / Tailored-Need projects scoped</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num s-vio">50+</div>
+      <div class="stat-lbl">Co-pilot waitlist signups (Phase 4)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num s-sky">+40%</div>
+      <div class="stat-lbl">LinkedIn follower growth by June 1</div>
+    </div>
+  </div>
+
+  <div class="slc-update">
+    <div class="slc-update-title">What changed: SLC Architecture v7.0 is now complete</div>
+    <div class="slc-update-body">
+      The original campaign canvas was drafted before the full SLC module map was finalised. SLC v7.0 is now a fully-specified <strong>54-module platform</strong> with two stages, nine capability domains, and a complete activation logic tied directly to the diagnostic. This revision updates the campaign to reflect that specificity — giving every phase, every post, and every tease line a grounded architecture to draw from.
+    </div>
+    <div class="slc-chips">
+      <span class="chip chip-t">54 modules mapped</span>
+      <span class="chip chip-a">Stage 1: 12 modules (Launchpad)</span>
+      <span class="chip chip-a">Stage 2: 42 modules (Ops Engine)</span>
+      <span class="chip chip-v">9 new modules in v6–v7</span>
+      <span class="chip chip-s">Diagnostic → module activation logic defined</span>
+      <span class="chip chip-g">Phase 4 tease now has specific module hooks</span>
+    </div>
+  </div>
+
+  <div style="margin-bottom:8px;"><div class="ey" style="margin-bottom:6px;">Products in Campaign</div></div>
+  <div class="product-row">
+    <div class="prod">
+      <div class="prod-label">Product 1 · Entry Point</div>
+      <div class="prod-name">AI Readiness Diagnostic</div>
+      <div class="prod-note">Free 30-min session. Top 1–2 AI priorities identified. 5 slots/month cap. Primary CTA for 8 weeks. Also the configuration input layer for SLC.</div>
+      <span class="prod-status ps-live">Campaign focus</span>
+    </div>
+    <div class="prod">
+      <div class="prod-label">Product 2 · Flagship</div>
+      <div class="prod-name">SLC — Solopreneur Life Co-pilot</div>
+      <div class="prod-note">54-module configurable platform. Stage 1 (Launchpad) + Stage 2 (Ops Engine). Only teased in Weeks 7–8. Waitlist CTA. The diagnostic configures it automatically.</div>
+      <span class="prod-status ps-design">Teased Wk 7–8 only</span>
+    </div>
+    <div class="prod">
+      <div class="prod-label">Product 3 · Secondary</div>
+      <div class="prod-name">Generic Chatbot</div>
+      <div class="prod-note">Entry-level AI presence. Low campaign priority. 1 post per month maximum. Education-first framing: "Your business already answers the same 40 questions every week."</div>
+      <span class="prod-status ps-low">1 post/month max</span>
+    </div>
+  </div>
+
+  <div style="margin-bottom:8px;"><div class="ey" style="margin-bottom:6px;">Objectives &amp; Channel</div></div>
+  <div class="obj-grid">
+    <div class="obj">
+      <div class="obj-label">Primary Objective</div>
+      <div class="obj-val"><strong>10 free diagnostic bookings</strong> completed by June 1. Each booking is a warm, qualified lead with a written business profile — not just a contact.</div>
+    </div>
+    <div class="obj">
+      <div class="obj-label">Secondary Objectives</div>
+      <div class="obj-val"><strong>3 SLC/Tailored-Need projects</strong> scoped · <strong>50+ waitlist signups</strong> for co-pilot · <strong>+40% LinkedIn followers</strong> from April baseline</div>
+    </div>
+    <div class="obj">
+      <div class="obj-label">Primary Channel</div>
+      <div class="obj-val"><strong>LinkedIn organic</strong> (primary) + <strong>LinkedIn paid</strong> for boosts in Phase 2–4. Budget: <strong>฿30,000–50,000 THB</strong>. Thai SME founders and solopreneurs.</div>
+    </div>
+    <div class="obj">
+      <div class="obj-label">Content Rhythm</div>
+      <div class="obj-val"><strong>3 posts/week:</strong> 1 insight, 1 framework/story, 1 product/action. 4 pillars: AI Strategy &amp; Insight · Business Problem Solving · ACERIS in Action · What Is ACERIS?</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════
+     TAB 2 — PHASE PLAN
+══════════════════════════════ -->
+<div class="view" id="v-phases">
+
+  <div class="phase-timeline">
+    <div class="phase-seg ph1">
+      <div class="ps-num">PHASE 1</div>
+      <div class="ps-title">Brand Seeding</div>
+      <div class="ps-dates">Wk 1–2 · Apr 7–20</div>
+    </div>
+    <div class="phase-seg ph2">
+      <div class="ps-num">PHASE 2</div>
+      <div class="ps-title">Diagnostic Launch</div>
+      <div class="ps-dates">Wk 3–4 · Apr 21–May 4</div>
+    </div>
+    <div class="phase-seg ph3">
+      <div class="ps-num">PHASE 3</div>
+      <div class="ps-title">Proof</div>
+      <div class="ps-dates">Wk 5–6 · May 5–18</div>
+    </div>
+    <div class="phase-seg ph4">
+      <div class="ps-num">PHASE 4</div>
+      <div class="ps-title">Scale + Signal</div>
+      <div class="ps-dates">Wk 7–8 · May 19–Jun 1</div>
+    </div>
+  </div>
+
+  <div class="phase-cards">
+
+    <!-- PHASE 1 -->
+    <div class="phase-card">
+      <div class="pc-head">
+        <div class="pc-left">
+          <div class="pc-num c1">1</div>
+          <div class="pc-meta">
+            <div class="pc-phase">Phase 1 · Weeks 1–2</div>
+            <div class="pc-name">Brand Seeding</div>
+            <div class="pc-hook">"You don't have an AI problem. You have a clarity problem."</div>
+          </div>
+        </div>
+        <div class="pc-dates-badge b-sky">Apr 7–20 · 6 posts</div>
+      </div>
+      <div class="pc-body">
+        <div>
+          <div class="pc-section-label">Content focus</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>Build brand recognition <strong>before any product mention</strong>. Establish Mick and ACERIS as a specific, differentiated voice.</li>
+              <li>30–40% of content directly answers: <strong>"What is ACERIS?"</strong></li>
+              <li>Lead with the problem: generic AI advice fails specific businesses. Plant the clarity narrative.</li>
+              <li>No diagnostic booking CTA in this phase — purely trust-building content.</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="pc-section-label">Pillar split</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>2× <strong>AI Strategy &amp; Insight</strong> — problem seeding, industry observations</li>
+              <li>2× <strong>What Is ACERIS?</strong> — brand identity, honest positioning</li>
+              <li>1× <strong>Business Problem Solving</strong> — relatable founder story</li>
+              <li>1× <strong>Framework</strong> — the clarity framework introduced</li>
+            </ul>
+          </div>
+          <div class="slc-callout">
+            <div class="slc-callout-label">SLC v7.0 update</div>
+            <div class="slc-callout-body">You can now hint at <strong>depth of preparation</strong> without naming the product. "We mapped 54 possible challenges before writing a single diagnostic question" is a credibility signal, not a product announcement. Use it in Phase 1 if the brand seeding requires proof of rigour.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-card">
+      <div class="pc-head">
+        <div class="pc-left">
+          <div class="pc-num c2">2</div>
+          <div class="pc-meta">
+            <div class="pc-phase">Phase 2 · Weeks 3–4</div>
+            <div class="pc-name">Diagnostic Launch</div>
+            <div class="pc-hook">"Your first 30 minutes with ACERIS are free."</div>
+          </div>
+        </div>
+        <div class="pc-dates-badge b-vio">Apr 21–May 4 · 6 posts</div>
+      </div>
+      <div class="pc-body">
+        <div>
+          <div class="pc-section-label">Content focus</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>Announce the diagnostic: free, capped at 5/month, structured 30-min session.</li>
+              <li>Introduce <strong>Path A</strong> (diagnostic → SLC auto-configured) and <strong>Path B</strong> (direct scoping call → SLC configured manually).</li>
+              <li>Primary CTA: <strong>Book a diagnostic slot</strong>. Booking link in bio/post.</li>
+              <li>Deploy MBTI analogy: "It's like an MBTI for your business — your result configures the platform."</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="pc-section-label">Pillar split</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>2× <strong>Product/Action</strong> — diagnostic announcement, booking CTA</li>
+              <li>2× <strong>AI Strategy &amp; Insight</strong> — what the diagnostic actually does</li>
+              <li>1× <strong>Framework</strong> — Path A vs Path B</li>
+              <li>1× <strong>What Is ACERIS?</strong> — process-first positioning</li>
+            </ul>
+          </div>
+          <div class="slc-callout">
+            <div class="slc-callout-label">SLC v7.0 update</div>
+            <div class="slc-callout-body">You can now explain the diagnostic with <strong>real specificity</strong>: "Every question in the diagnostic is wired to a module. If you say you run a product-based business, the platform activates inventory tracking, batch logs, and courier integration automatically — before you log in for the first time." This is now grounded in real architecture, not positioning language.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-card">
+      <div class="pc-head">
+        <div class="pc-left">
+          <div class="pc-num c3">3</div>
+          <div class="pc-meta">
+            <div class="pc-phase">Phase 3 · Weeks 5–6</div>
+            <div class="pc-name">Proof</div>
+            <div class="pc-hook">"First diagnostic clients. First case briefs. Social proof."</div>
+          </div>
+        </div>
+        <div class="pc-dates-badge b-grn">May 5–18 · 6 posts</div>
+      </div>
+      <div class="pc-body">
+        <div>
+          <div class="pc-section-label">Content focus</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>Publish the first diagnostic <strong>case briefs</strong> — anonymised. What business type, what the diagnostic found, what was activated.</li>
+              <li>One brief for a <strong>Stage 1 client</strong> (idea to launch), one for a <strong>Stage 2 client</strong> (running business with ops problems).</li>
+              <li>Demonstrate the diagnostic-to-platform connection in a real story format.</li>
+              <li>Maintain booking CTA but shift tone to: "Here's what a session looks like."</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="pc-section-label">Pillar split</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>2× <strong>ACERIS in Action</strong> — case briefs (Stage 1 + Stage 2)</li>
+              <li>2× <strong>AI Strategy &amp; Insight</strong> — patterns from first diagnostics</li>
+              <li>1× <strong>Business Problem Solving</strong> — insight from real sessions</li>
+              <li>1× <strong>Action</strong> — final Q2 slot scarcity CTA</li>
+            </ul>
+          </div>
+          <div class="slc-callout">
+            <div class="slc-callout-label">SLC v7.0 update</div>
+            <div class="slc-callout-body">Case briefs can now reference specific capability domains. A Stage 1 client story can name: <strong>Scenario Simulator, Pricing Strategy, Go-to-Market Planner</strong>. A Stage 2 story can reference: <strong>Order Management Hub, Rolling Cash Flow Forecast, Marketing Ops Agent</strong>. Module-level specificity increases credibility — this is a functioning architecture, not a concept.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-card">
+      <div class="pc-head">
+        <div class="pc-left">
+          <div class="pc-num c4">4</div>
+          <div class="pc-meta">
+            <div class="pc-phase">Phase 4 · Weeks 7–8</div>
+            <div class="pc-name">Scale + Forward Signal</div>
+            <div class="pc-hook">"The diagnostic told us who you are as a business. What we're building next uses that answer."</div>
+          </div>
+        </div>
+        <div class="pc-dates-badge b-amb">May 19–Jun 1 · 4 posts</div>
+      </div>
+      <div class="pc-body">
+        <div>
+          <div class="pc-section-label">Content focus</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>Begin teasing SLC co-pilot for the first time. No full announcement — <strong>early access waitlist only</strong>.</li>
+              <li>Drive urgency on remaining Q2 diagnostic slots.</li>
+              <li>Signal Q3 — "what happens next" for waitlist members.</li>
+              <li>Primary CTA: <strong>Join the waitlist</strong>. Secondary: Book final diagnostic slots.</li>
+              <li>Tease line: "No setup. No onboarding. It already knows you."</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="pc-section-label">Pillar split</div>
+          <div class="pc-section-body">
+            <ul>
+              <li>2× <strong>Tease</strong> — SLC module hints, performance dashboard preview</li>
+              <li>1× <strong>ACERIS in Action</strong> — the platform concept story</li>
+              <li>1× <strong>Action</strong> — final waitlist CTA, Q2 close</li>
+            </ul>
+          </div>
+          <div class="slc-callout">
+            <div class="slc-callout-label">SLC v7.0 update — major revision</div>
+            <div class="slc-callout-body">Phase 4 tease is now grounded in <strong>real, named features</strong>. Use specific modules as content hooks: Performance Dashboard ("one screen, everything"), Rolling Cash Flow Forecast ("will you have cash on the 15th?"), Marketing Ops Agent ("your entire marketing department in one agent"), Compliance Calendar ("pre-loaded with Thai regulatory deadlines"), OKR Tracker ("speedometer vs sat-nav"). See Messaging Bank → SLC Tease Bank for full hooks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /phase-cards -->
+</div>
+
+<!-- ══════════════════════════════
+     TAB 3 — CONTENT CALENDAR
+══════════════════════════════ -->
+<div class="view" id="v-calendar">
+
+  <div style="margin-bottom:12px;">
+    <p class="sub">22 posts · April 7 – May 31 · 3 posts/week (Weeks 1–6), 2 posts/week (Weeks 7–8) · Click any post for inspiration.</p>
+  </div>
+
+  <div class="week-cards">
+
+    <!-- WEEK 1 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--sky)">Week 1 · Apr 7–11</div>
+        <span class="wc-phase-tag" style="background:var(--skd);color:var(--sky)">Phase 1 · Brand Seeding</span>
+      </div>
+      <div class="wc-posts">
+        <div class="post-card">
+          <div class="post-date">Mon Apr 7</div>
+          <span class="post-type pt-insight">Insight</span>
+          <div class="post-hook">"Most AI advice is wrong for your business."</div>
+          <div class="post-angle">Not because it's bad advice — because it's not advice for you. Generic AI guidance scales. Specific business results don't. Problem-seeds the entire campaign. No product mention.</div>
+          <div class="post-cta">CTA: Follow for the specific version</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed Apr 9</div>
+          <span class="post-type pt-brand">Brand</span>
+          <div class="post-hook">"What ACERIS actually does. And doesn't."</div>
+          <div class="post-angle">Direct, honest positioning. Not a tool reseller, not an automation agency. We start with a business problem and work backward. Answers: "What is ACERIS?" for the first time.</div>
+          <div class="post-cta">CTA: None — pure awareness</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Fri Apr 11</div>
+          <span class="post-type pt-framework">Framework</span>
+          <div class="post-hook">"The clarity problem: why the right question matters more than the right tool."</div>
+          <div class="post-angle">Introduces the core campaign idea. Most businesses buy tools before they've defined the problem. Clarity first, investment second. Framework that sets up the diagnostic offer next week.</div>
+          <div class="post-cta">CTA: Save this post</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--sky)">Week 2 · Apr 14–18</div>
+        <span class="wc-phase-tag" style="background:var(--skd);color:var(--sky)">Phase 1 · Brand Seeding</span>
+      </div>
+      <div class="wc-posts">
+        <div class="post-card">
+          <div class="post-date">Mon Apr 14</div>
+          <span class="post-type pt-insight">Insight</span>
+          <div class="post-hook">"The Thai SME AI trap: buying tools before buying a map."</div>
+          <div class="post-angle">Thai-market-specific angle. Local founders are being sold AI tools before understanding their own operations. The tool becomes the problem, not the solution. Relatable, not preachy.</div>
+          <div class="post-cta">CTA: Comment — has this happened to you?</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed Apr 16</div>
+          <span class="post-type pt-brand">Brand</span>
+          <div class="post-hook">"A real business. A real mistake. One overlooked question."</div>
+          <div class="post-angle">A story post. Anonymised founder story: bought an AI solution, it didn't work. Not because the tool was bad — because the problem hadn't been defined. The question that changed it. Brand-building through empathy.</div>
+          <div class="post-cta">CTA: Tag a founder who needs to hear this</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Fri Apr 18</div>
+          <span class="post-type pt-brand">Brand</span>
+          <div class="post-hook">"What is ACERIS? The 10-second, 30-second, and 3-minute answer."</div>
+          <div class="post-angle">Three-level answer post. Directly addresses the brand clarity problem. Mick's voice: honest, specific, no marketing language. Ends with: "Strategy first. Always." Reinforces positioning before Phase 2 product push.</div>
+          <div class="post-cta">CTA: Follow for what comes Monday</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--vio)">Week 3 · Apr 21–25</div>
+        <span class="wc-phase-tag" style="background:var(--vd);color:var(--vio)">Phase 2 · Diagnostic Launch</span>
+      </div>
+      <div class="wc-posts">
+        <div class="post-card">
+          <div class="post-date">Mon Apr 21</div>
+          <span class="post-type pt-product">Product</span>
+          <div class="post-hook">"30 minutes. Free. Your top AI priorities — identified."</div>
+          <div class="post-angle">Diagnostic announcement. Free 30-min session, written summary. 5 slots/month cap — scarcity built in. Clear structure: what we do, what you get, how to book. First explicit product mention of the campaign.</div>
+          <div class="post-cta">CTA: Booking link in bio</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed Apr 23</div>
+          <span class="post-type pt-insight">Insight</span>
+          <div class="post-hook">"We mapped 54 things before we could write a single diagnostic question."</div>
+          <div class="post-angle">SLC v7.0 credibility signal. The diagnostic isn't a survey — it's the input layer for a 54-module platform. Every question determines which modules activate. The depth of preparation behind a 30-minute conversation. Implies the platform without announcing it.</div>
+          <div class="post-cta">CTA: Waitlist link (first mention)</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Fri Apr 25</div>
+          <span class="post-type pt-action">Action</span>
+          <div class="post-hook">"5 slots. Here's what we do in each one."</div>
+          <div class="post-angle">Process transparency post. Step-by-step what happens in a diagnostic: the 30 minutes, the written summary, what the output looks like. Lowers the barrier to booking. Second booking CTA of Phase 2.</div>
+          <div class="post-cta">CTA: Book your slot</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--vio)">Week 4 · Apr 28–May 2</div>
+        <span class="wc-phase-tag" style="background:var(--vd);color:var(--vio)">Phase 2 · Diagnostic Deepening</span>
+      </div>
+      <div class="wc-posts">
+        <div class="post-card">
+          <div class="post-date">Mon Apr 28</div>
+          <span class="post-type pt-insight">Insight</span>
+          <div class="post-hook">"The diagnostic isn't a survey. It's more like an MBTI for your business."</div>
+          <div class="post-angle">MBTI analogy in full. The test = the diagnostic. Your result = your business DNA profile. The platform = built from that result. It already knows you before you log in. Bridges trust gap around what happens after booking.</div>
+          <div class="post-cta">CTA: Book — or join waitlist</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed Apr 30</div>
+          <span class="post-type pt-framework">Framework</span>
+          <div class="post-hook">"Two ways into ACERIS. Same destination."</div>
+          <div class="post-angle">Path A vs Path B explained. Path A: diagnostic first, SLC auto-configured. Path B: you already know your problem, go straight to a scoping call. No wrong answer. Removes objection for people who think they don't need a diagnostic.</div>
+          <div class="post-cta">CTA: Which path are you on?</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Fri May 2</div>
+          <span class="post-type pt-brand">Brand</span>
+          <div class="post-hook">"Strategy before tools. Always. Here's why that's not a platitude."</div>
+          <div class="post-angle">Reinforces the brand principle with specific examples of what "strategy first" means in practice at ACERIS. Not a lecture — a demonstration. Closes Phase 2 with a brand reset before the proof phase begins.</div>
+          <div class="post-cta">CTA: Follow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 5 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--green)">Week 5 · May 5–9</div>
+        <span class="wc-phase-tag" style="background:var(--grd);color:var(--green)">Phase 3 · Proof</span>
+      </div>
+      <div class="wc-posts">
+        <div class="post-card">
+          <div class="post-date">Mon May 5</div>
+          <span class="post-type pt-proof">Proof</span>
+          <div class="post-hook">"Case Brief #1: From idea to structure in one session."</div>
+          <div class="post-angle">Stage 1 Launchpad story. Anonymised founder with a concept but no plan. Diagnostic found: needed Feasibility Analysis, Pricing Strategy, Go-to-Market Planner. SLC configured Stage 1 from the result. What they had after 30 minutes vs before.</div>
+          <div class="post-cta">CTA: DM if this sounds like you</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed May 7</div>
+          <span class="post-type pt-insight">Insight</span>
+          <div class="post-hook">"What the first 5 diagnostics taught us about Thai solopreneurs in 2026."</div>
+          <div class="post-angle">Pattern post from real sessions. Aggregated, anonymised findings. What problems keep appearing. What questions nobody is asking but should be. Positions ACERIS as a practitioner, not just a service. Builds authority.</div>
+          <div class="post-cta">CTA: Comment — does this match your experience?</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Fri May 9</div>
+          <span class="post-type pt-framework">Framework</span>
+          <div class="post-hook">"The platform that already knows your business before you log in."</div>
+          <div class="post-angle">First explicit SLC concept post (without naming it yet). How the diagnostic creates a business profile. How that profile pre-configures the platform. "No onboarding. No manual setup. It's already been done — from your answers." Plants the waitlist idea.</div>
+          <div class="post-cta">CTA: Join waitlist (early access framing)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 6 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--green)">Week 6 · May 12–16</div>
+        <span class="wc-phase-tag" style="background:var(--grd);color:var(--green)">Phase 3 · Proof + Scarcity</span>
+      </div>
+      <div class="wc-posts">
+        <div class="post-card">
+          <div class="post-date">Mon May 12</div>
+          <span class="post-type pt-proof">Proof</span>
+          <div class="post-hook">"Case Brief #2: The business that was running too fast to see clearly."</div>
+          <div class="post-angle">Stage 2 Ops Engine story. Running business, founder overwhelmed. Diagnostic found: needed Order Management, Cash Flow visibility, Marketing Ops. SLC Stage 2 configured from the result. What changed in 30 days. Uses real SLC v7.0 module names.</div>
+          <div class="post-cta">CTA: Book a diagnostic if this sounds familiar</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed May 14</div>
+          <span class="post-type pt-insight">Insight</span>
+          <div class="post-hook">"Why AI tools churn at 6 weeks — and what we built to stop it."</div>
+          <div class="post-angle">The SLC moat argument. Most SMEs churn from AI tools because setup is hard and the tool doesn't fit the business. SLC arrives pre-fitted. The switching cost becomes high once operational knowledge is stored. Anti-churn by design.</div>
+          <div class="post-cta">CTA: Follow</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Fri May 16</div>
+          <span class="post-type pt-action">Action</span>
+          <div class="post-hook">"Q2 diagnostic slots are nearly full. Here's what's left."</div>
+          <div class="post-angle">Scarcity post. How many slots remain. What the final Q2 session includes. CTA to book or join waitlist for Q3. Transition post — closes Phase 3, opens Phase 4 signal. Honest, not manufactured urgency.</div>
+          <div class="post-cta">CTA: Book final Q2 slot</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 7 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--amber)">Week 7 · May 19–21</div>
+        <span class="wc-phase-tag" style="background:var(--ad);color:var(--amber)">Phase 4 · Scale + SLC Tease</span>
+      </div>
+      <div class="wc-posts" style="grid-template-columns:1fr 1fr;">
+        <div class="post-card">
+          <div class="post-date">Mon May 19</div>
+          <span class="post-type pt-tease">Tease</span>
+          <div class="post-hook">"One screen. Your entire business."</div>
+          <div class="post-angle">Performance Dashboard tease. Revenue, pipeline, cash position, open tasks, churn risk, brand health — all in one login view. First glimpse of the SLC interface concept. Visual-led post. Waitlist CTA only.</div>
+          <div class="post-cta">CTA: Waitlist — early access</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Wed May 21</div>
+          <span class="post-type pt-tease">Tease</span>
+          <div class="post-hook">"90 days of cash flow. Already mapped. Before you ask."</div>
+          <div class="post-angle">Rolling Cash Flow Forecast module tease. "Will I have cash on the 15th to pay my supplier?" — answered automatically. Pulls from orders, AP dates, restock commitments. A real operational anxiety, named. No product demo — just the problem solved.</div>
+          <div class="post-cta">CTA: Early access waitlist</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK 8 -->
+    <div class="week-card">
+      <div class="wc-head">
+        <div class="wc-num" style="color:var(--amber)">Week 8 · May 26–31</div>
+        <span class="wc-phase-tag" style="background:var(--ad);color:var(--amber)">Phase 4 · Scale + Close</span>
+      </div>
+      <div class="wc-posts" style="grid-template-columns:1fr 1fr;">
+        <div class="post-card">
+          <div class="post-date">Tue May 26</div>
+          <span class="post-type pt-tease">Tease</span>
+          <div class="post-hook">"The co-pilot that already knows your business. No setup. No onboarding."</div>
+          <div class="post-angle">Fullest SLC reveal before official launch. The diagnostic as input. The platform as output. "It already knows you before you log in for the first time." First time naming SLC directly. Specific module hints: Marketing Ops Agent, Compliance Calendar, OKR Tracker.</div>
+          <div class="post-cta">CTA: Join the waitlist — limited early access</div>
+        </div>
+        <div class="post-card">
+          <div class="post-date">Sat May 31</div>
+          <span class="post-type pt-action">Action</span>
+          <div class="post-hook">"Q2 closes June 1. Here's what's next."</div>
+          <div class="post-angle">Campaign close post. Recap of what happened in Q2: diagnostics completed, patterns found, platform in build. What Q3 brings: SLC early access, first live configurations. The waitlist is the bridge. Closes with momentum, not pressure.</div>
+          <div class="post-cta">CTA: Join waitlist for Q3 early access</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /week-cards -->
+</div>
+
+<!-- ══════════════════════════════
+     TAB 4 — PRE-LAUNCH WEEK
+══════════════════════════════ -->
+<div class="view" id="v-prelaunch">
+
+  <div class="pre-banner">
+    <div class="pre-banner-label">Pre-Launch · March 26 – April 1, 2026</div>
+    <div class="pre-banner-title">Warm Up Before the Campaign Starts</div>
+    <div class="pre-banner-body">
+      The campaign officially opens April 7. This week is about warming the LinkedIn audience — planting the problem narrative, establishing Mick's voice, and creating anticipation without a product announcement. Three posts. No CTAs beyond "follow." No product mentions. Pure brand seeding.
+    </div>
+  </div>
+
+  <div class="pre-posts">
+
+    <!-- POST 1 -->
+    <div class="pre-post">
+      <div class="pp-head">
+        <div>
+          <div class="pp-day">Post 1 — Thursday, March 26</div>
+          <div class="pp-date" style="margin-top:2px;">Pillar: What Is ACERIS? &nbsp;·&nbsp; Type: Founder Voice / Brand Intro</div>
+        </div>
+        <div class="no-cta">No CTA — awareness only</div>
+      </div>
+      <div class="pp-body">
+        <div>
+          <div class="pp-col-label">Opening Hook</div>
+          <div class="pp-hook">"A lot of people ask me what ACERIS does.<br>I've been giving the wrong answer."</div>
+          <div class="pp-col-label" style="margin-top:10px;">Tone</div>
+          <div class="pp-tone">Personal, self-aware, honest. Mick speaks in first person throughout. No marketing language — reads like a founder reflecting, not pitching. Warm and direct.</div>
+        </div>
+        <div>
+          <div class="pp-col-label">Key Points to Hit</div>
+          <ul class="pp-points">
+            <li>Most of Q1, the answer was: <strong>"We help Thai businesses figure out where AI fits."</strong> Not wrong — but it sounds like every other AI consultancy.</li>
+            <li>The real answer is simpler and harder to say: we start with <strong>what's wrong</strong>, not what's possible. What's specifically broken, in your specific business, right now.</li>
+            <li>That's not a pitch. That's a method. And the method is why ACERIS exists — <strong>strategy before tools, always</strong>.</li>
+            <li>Tease: "Starting April 7, something new. Same method. Different format. More soon."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 2 -->
+    <div class="pre-post">
+      <div class="pp-head">
+        <div>
+          <div class="pp-day">Post 2 — Saturday, March 28</div>
+          <div class="pp-date" style="margin-top:2px;">Pillar: AI Strategy &amp; Insight &nbsp;·&nbsp; Type: Problem Seeding</div>
+        </div>
+        <div class="no-cta">CTA: Follow for the specific version</div>
+      </div>
+      <div class="pp-body">
+        <div>
+          <div class="pp-col-label">Opening Hook</div>
+          <div class="pp-hook">"Most AI advice you'll read this week is wrong. Not because it's bad — because it's not for you."</div>
+          <div class="pp-col-label" style="margin-top:10px;">Tone</div>
+          <div class="pp-tone">Sharp, direct, no hedging. No fluff. Reads like a practitioner who's seen the pattern too many times. Ends on a useful insight, not a complaint. Punchy paragraphs, not long blocks.</div>
+        </div>
+        <div>
+          <div class="pp-col-label">Key Points to Hit</div>
+          <ul class="pp-points">
+            <li>AI tools are designed to serve everyone. <strong>Your business problems serve only you.</strong></li>
+            <li>"Use AI to automate your marketing" — which marketing? For which customers? In which market? With what budget? The advice scales; the results don't.</li>
+            <li>The question that matters isn't "what AI should I use?" It's: <strong>"what problem, if fixed, would actually change my numbers?"</strong></li>
+            <li>If you can answer the second question, most AI decisions become obvious. If you can't — that's the starting point.</li>
+            <li>Close: "This is the only kind of AI advice ACERIS gives. Follow if you want the specific version."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 3 -->
+    <div class="pre-post">
+      <div class="pp-head">
+        <div>
+          <div class="pp-day">Post 3 — Monday, March 31</div>
+          <div class="pp-date" style="margin-top:2px;">Pillar: What Is ACERIS? &nbsp;·&nbsp; Type: Anticipation / Teaser</div>
+        </div>
+        <div class="no-cta">CTA: Follow so you don't miss it</div>
+      </div>
+      <div class="pp-body">
+        <div>
+          <div class="pp-col-label">Opening Hook</div>
+          <div class="pp-hook">"Something is coming April 7.<br>It starts with 30 minutes and a question."</div>
+          <div class="pp-col-label" style="margin-top:10px;">Tone</div>
+          <div class="pp-tone">Confident and minimal. Intriguing without being cryptic. Enough specificity to create genuine anticipation. No hype language. Short post — under 150 words. The brevity is intentional.</div>
+        </div>
+        <div>
+          <div class="pp-col-label">Key Points to Hit</div>
+          <ul class="pp-points">
+            <li>We spent Q1 <strong>mapping every challenge a Thai solopreneur faces</strong> — from "I have an idea but no plan" to "My business is running but I'm drowning in it."</li>
+            <li>On April 7, we start something. <strong>Free. Limited. Structured.</strong></li>
+            <li>Not a pitch. Not a demo. A conversation with a specific outcome.</li>
+            <li>Close: "Details Monday. Follow so you don't miss the first slot." — creates urgency around scarcity without over-explaining.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pre-posts -->
+</div>
+
+<!-- ══════════════════════════════
+     TAB 5 — MESSAGING BANK
+══════════════════════════════ -->
+<div class="view" id="v-messaging">
+
+  <!-- MBTI ANALOGY -->
+  <div class="msg-section">
+    <div class="msg-section-label">The MBTI Analogy — Use This in Campaign Content</div>
+    <div class="mbti-block">
+      <div class="mbti-intro">People understand personality tests. They know what it means for a test to read who they are and produce something specific to that result. The MBTI analogy makes the diagnostic-to-platform journey immediately legible — without requiring any explanation of how AI works. Use this in Phase 2 and Phase 3 content.</div>
+      <div class="mbti-row">
+        <div class="mbti-item">
+          <div class="mbti-item-label">The Test</div>
+          <div class="mbti-item-val">The AI Readiness Diagnostic — 30 minutes, structured questions. Maps your business type, stage, and top priorities.</div>
+        </div>
+        <div class="mbti-item">
+          <div class="mbti-item-label">The Result</div>
+          <div class="mbti-item-val">Your business DNA profile — which modules activate, what configuration the platform builds for you, and what price reflects your needs.</div>
+        </div>
+        <div class="mbti-item">
+          <div class="mbti-item-label">The Product</div>
+          <div class="mbti-item-val">The SLC platform — already fitted to your business before you log in. No manual setup. No onboarding. It already knows you.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THREE-LEVEL ANSWER -->
+  <div class="msg-section">
+    <div class="msg-section-label">Three-Level Answer — "What Is ACERIS?"</div>
+    <div class="answer-row">
+      <div class="answer-item">
+        <div class="answer-item-label">10 seconds</div>
+        <div class="answer-item-val"><strong>"We help Thai businesses figure out where AI actually moves the needle — then we build it."</strong></div>
+      </div>
+      <div class="answer-item">
+        <div class="answer-item-label">30 seconds (follow-up)</div>
+        <div class="answer-item-val">"We start with a free diagnostic — 30 minutes, we map your top priorities. From there, we either build it or hand you a roadmap. <strong>Strategy first, always.</strong>"</div>
+      </div>
+      <div class="answer-item">
+        <div class="answer-item-label">3 minutes (detailed)</div>
+        <div class="answer-item-val">"We do three things: free diagnostics to find your AI opportunities, a co-pilot platform for businesses ready to run on AI, and an entry-level chatbot for those just getting started. Everything starts from a <strong>business problem, not a technology</strong>."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLC TEASE BANK -->
+  <div class="msg-section">
+    <div class="msg-section-label">SLC Tease Bank — Phase 4 Module-Specific Hooks (v7.0)</div>
+    <div style="font-size:10px;color:var(--tm);margin-bottom:10px;line-height:1.5;">Use these in Weeks 7–8. Each hook names a specific module without a product pitch — the feature speaks for itself. Lead with the problem it solves, not the feature name.</div>
+    <div class="tease-grid">
+      <div class="tease-item">
+        <div class="tease-module">Performance Dashboard</div>
+        <div class="tease-line">"One screen. Revenue. Pipeline. Cash. Open tasks. Churn risk. Brand health. Login, know everything."</div>
+        <div class="tease-context">The first thing you see when you log in. Everything you needed to check five different tools for — now in one place.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">Rolling Cash Flow Forecast</div>
+        <div class="tease-line">"Will you have cash on the 15th to pay your supplier? This answers that — 90 days out, automatically."</div>
+        <div class="tease-context">Pulls from confirmed orders, accounts payable dates, restock commitments. The most important unanswered SME financial question, answered.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">Marketing Ops Agent</div>
+        <div class="tease-line">"Your content calendar. Your ads. Your A/B tests. One agent — your entire marketing department."</div>
+        <div class="tease-context">Day-to-day marketing execution: schedule, publish, monitor, rotate. 48-hour budget shift to the winning ad. Monthly report generated automatically.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">Compliance Calendar</div>
+        <div class="tease-line">"Pre-loaded with every Thai regulatory deadline — for your specific business type. No more surprises."</div>
+        <div class="tease-context">Business licence renewal, VAT filing, social security, food safety permits. Alerts at 30 days, 7 days, day-of. Creates tasks automatically.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">OKR / Goal Tracker</div>
+        <div class="tease-line">"The difference between a speedometer and a sat-nav. Metrics show speed. Goals show direction."</div>
+        <div class="tease-context">Monthly targets: revenue, new customers, on-time delivery, repeat purchase rate. Live progress bars on your dashboard. Simple and visual.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">Order Management Hub</div>
+        <div class="tease-line">"Where is order #247? Now there's an answer — at every stage from confirmed to delivered."</div>
+        <div class="tease-context">The operational backbone of Stage 2. Chatbot → Inventory → Auditor → Courier → Returns — all connected into one order lifecycle.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">Scenario Simulator (Stage 1)</div>
+        <div class="tease-line">"Slide the price. Slide the volume. Watch the profit change in real time. Before you commit a baht."</div>
+        <div class="tease-context">For pre-launch founders: break-even, ROI, cash flow — all live. Danger zones flagged automatically. Highest-priority UX in Stage 1.</div>
+      </div>
+      <div class="tease-item">
+        <div class="tease-module">Smart Ads Engine</div>
+        <div class="tease-line">"Ads that find people who look like your best customers — not your average customer."</div>
+        <div class="tease-context">Meta + TikTok ads powered by CRM data. Lookalike audiences from top-LTV customers. 3–5× higher conversion than cold demographic targeting.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOCABULARY RULES -->
+  <div class="msg-section">
+    <div class="msg-section-label">Brand Vocabulary — Non-Negotiable</div>
+    <div class="vocab-row">
+      <div class="vocab-block never">
+        <div class="vocab-label">Never Say</div>
+        <div class="vocab-list">
+          <span class="vocab-chip">automation-first</span>
+          <span class="vocab-chip">tool-first</span>
+          <span class="vocab-chip">AI features</span>
+          <span class="vocab-chip">digitize your operations</span>
+          <span class="vocab-chip">unlock potential</span>
+          <span class="vocab-chip">leverage AI</span>
+          <span class="vocab-chip">end-to-end solution</span>
+          <span class="vocab-chip">AI transformation</span>
+          <span class="vocab-chip">empower</span>
+          <span class="vocab-chip">unlock</span>
+          <span class="vocab-chip">journey</span>
+        </div>
+      </div>
+      <div class="vocab-block always">
+        <div class="vocab-label">Always Say</div>
+        <div class="vocab-list">
+          <span class="vocab-chip">strategy</span>
+          <span class="vocab-chip">solutions</span>
+          <span class="vocab-chip">outcomes</span>
+          <span class="vocab-chip">business impact</span>
+          <span class="vocab-chip">what moves the needle</span>
+          <span class="vocab-chip">the right problem</span>
+          <span class="vocab-chip">clarity</span>
+          <span class="vocab-chip">built for your operation</span>
+          <span class="vocab-chip">specific</span>
+          <span class="vocab-chip">strategy first</span>
+          <span class="vocab-chip">before you commit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERSONA LANGUAGE -->
+  <div class="msg-section">
+    <div class="msg-section-label">SLC Persona Language — Stage 1 vs Stage 2</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:var(--bg2);border:1px solid rgba(29,217,160,0.18);border-radius:10px;padding:12px 14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Stage 1 — Launchpad Persona</div>
+        <div style="font-size:10.5px;color:#fff;font-weight:500;margin-bottom:5px;">"I know what I want to sell. I have no idea how to start."</div>
+        <div style="font-size:10px;color:var(--tm);line-height:1.6;">Content angle: clarity before commitment. The business model, the feasibility, the pricing, the go-to-market — all need to be right before the first baht is spent. SLC Stage 1 (Launchpad) is the platform that does this with you. Reference: BMC Builder, Scenario Simulator, Pricing Strategy, GTM Planner, Legal Aide.</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid rgba(245,158,11,0.18);border-radius:10px;padding:12px 14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Stage 2 — Ops Engine Persona</div>
+        <div style="font-size:10.5px;color:#fff;font-weight:500;margin-bottom:5px;">"My business is running. I need it to run better — without hiring a full team."</div>
+        <div style="font-size:10px;color:var(--tm);line-height:1.6;">Content angle: one platform instead of five tools and two contractors. Orders, money, marketing, operations, strategy — all visible from one screen. Reference: Order Hub, Rolling Cash Flow, Marketing Ops Agent, Compliance Calendar, OKR Tracker, Performance Dashboard.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /messaging -->
+
+<script>
+function sw(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('v-'+id).classList.add('on');
+  event.target.classList.add('on');
+}
+</script>
+
+</body>
+</html>
